@@ -42,8 +42,9 @@ run on SOC better
 onnx 
 onnxruntime  
 polygraph  
-onnxsim
+onnxsim              https://github.com/onnxsim/onnxsim     
 onnx_graphsurgeon
+onnxslim             https://github.com/inisis/OnnxSlim
 ```
 
 + bin
@@ -56,3 +57,12 @@ trtexec
 
 导出前的工作很重要！！！  
 模型设计与导出层面的优化：固定形状、选择高版本 opset、高版本torch         
+
+## references  
+https://github.com/zzqiuzz/onnx-opt-tool/tree/master  
+https://github.com/ZhongkuiMa/slimonnx   
+https://github.com/levipereira/Model-Optimizer-ONNX   
+https://github.com/onnx/optimizer
+https://github.com/ThanatosShinji/onnx-tool   
+
+
