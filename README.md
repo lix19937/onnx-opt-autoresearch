@@ -19,6 +19,12 @@ references
 scripts    
 SKILL.md    
 ```
+## Optimization Techniques for Computation Graphs     
++ Constant Folding: Statically computes subgraphs that depend solely on constant nodes during the offline phase, avoiding redundant computations during inference.    
++ Redundant Node Elimination: Removes nodes that do not affect the model output (e.g., Identity, Dropout, Unsqueeze, etc.) to streamline the computation graph.    
++ Operator Fusion: Merges multiple consecutive operators into a single operator to reduce kernel launch overhead and optimize memory access (read/write).
+Typical scenarios: Conv + Add, Conv + BatchNorm + ReLU, GELU fusion, LayerNorm fusion.    
++ Layout Optimization: Adjusts tensor layouts to a more efficient format for specific hardware backends (e.g., converting from NCHW to NHWC for CUDA).   
 
 ## opt-methods    
 + 常量折叠 (Constant Folding)： 在离线阶段静态计算仅依赖常量节点的子图，避免在推理运行时重复计算。    
