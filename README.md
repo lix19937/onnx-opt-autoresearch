@@ -17,6 +17,19 @@ onnx -> auto opt                    -> ort verify -> trtexec --fp16  latency  ex
                                                           else  enter new loop 
 
 
+ONNX exporters often produce graphs with constant-folding opportunities, spurious dynamic axes, or shape-inference gaps. Sanitizing cleans these up, but it is a quality pass, not a correctness gate — TRT parses many un-sanitized exports fine. Both stages below are therefore optional and allowed to fail: each falls through to its input, and Step 3 always leaves a model.clean.onnx for the rest of the workflow (worst case, a copy of the exported model). Run:
+
+cp bert_onnx/model.onnx bert_onnx/model.clean.onnx
+
+# (1) onnxsim — graph simplification / constant folding.
+python3 -m onnxsim bert_onnx/model.clean.onnx bert_onnx/model.simplified.onnx \
+  && cp bert_onnx/model.simplified.onnx bert_onnx/model.clean.onnx
+
+# (2) polygraphy surgeon — fold constants, prune dangling nodes.
+polygraphy surgeon sanitize bert_onnx/model.clean.onnx \
+  -o bert_onnx/model.surgeon.onnx --fold-constants \
+  && cp bert_onnx/model.surgeon.onnx bert_onnx/model.clean.onnx
+
 ```
 
 ## struct   
@@ -25,6 +38,7 @@ references
 scripts    
 SKILL.md    
 ```
+
 ## Optimization Techniques for Computation Graphs     
 + Constant Folding: Statically computes subgraphs that depend solely on constant nodes during the offline phase, avoiding redundant computations during inference.    
 + Redundant Node Elimination: Removes nodes that do not affect the model output (e.g., Identity, Dropout, Unsqueeze, etc.) to streamline the computation graph.    
