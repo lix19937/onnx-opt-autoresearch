@@ -2,6 +2,12 @@
 
 ## workflow  
 ```
+
+onnx op static
+     weigths static
+     ops
+     
+
 onnx -> -------                     -> ort verify -> trtexec --fp16  latency  baseline-0       |
 onnx -> onnxsim                     -> ort verify -> trtexec --fp16  latency  baseline-1       |   ->   baseline  
 onnx -> polygraph surgeon sanitize  -> ort verify -> trtexec --fp16  latency  baseline-2       |
